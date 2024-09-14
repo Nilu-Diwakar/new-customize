@@ -9,7 +9,7 @@ from bot import Bot
 from config import ADMINS, CHANNEL_ID, DISABLE_CHANNEL_BUTTON
 from helper_func import encode
 
-@Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start','users','broadcast','batch','genlink','stats']))
+@Bot.on_message((filters.document | filters.video | filters.audio | filters.photo) & filters.private & filters.user(ADMINS) & ~filters.command(['start','users','broadcast','batch','genlink','stats']))
 async def channel_post(client: Client, message: Message):
     reply_text = await message.reply_text("Please Wait...!", quote = True)
     try:
@@ -39,8 +39,7 @@ async def channel_post(client: Client, message: Message):
         except Exception:
             pass
 
-# (filters.document | filters.video | filters.audio | filters.photo) & 
-@Bot.on_message(filters.channel & filters.incoming & filters.chat(CHANNEL_ID))
+@Bot.on_message((filters.document | filters.video | filters.audio | filters.photo) & filters.channel & filters.incoming & filters.chat(CHANNEL_ID))
 async def new_post(client: Client, message: Message):
 
     if DISABLE_CHANNEL_BUTTON:
